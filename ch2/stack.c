@@ -119,7 +119,7 @@ node *make_tree(void){
   return H;
 }
 
-int tree (node *tree){
+int tree_candy (node *tree){
   int total = 0;
   stack *s = new_stack();
   while (tree != NULL){
@@ -128,8 +128,10 @@ int tree (node *tree){
       push(s, tree->left);
       tree = tree->right;
     }
+
     else {
      total = total + tree->candy; 
+
      if (!is_empty(s)){
        tree = pop(s);
      }
@@ -144,7 +146,7 @@ int tree (node *tree){
 int main (void){
   node *root = make_tree(); 
   int total_candy;
-  total_candy = tree(root);
+  total_candy = tree_candy(root);
   printf("total candy: %d\n", total_candy);
   return 0;
 }
