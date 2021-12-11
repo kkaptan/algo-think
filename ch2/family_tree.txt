@@ -1,0 +1,8 @@
+7 2
+Zara 1 Amber
+Amber 4 Sana Vlad Holly Kevin
+Vlad 1 Omar
+Sana 2 Gabriel Lucas
+Kevin 2 Jad Cassie
+Lucas 1 Enzo
+Enzo 2 Min Becky
