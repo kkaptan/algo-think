@@ -1,6 +1,6 @@
 7 2
 Zara 1 Amber
-Amber 4 Sana Vlad Holly Kevin
+Amber 4 Sana Vlad Ashley Kevin
 Vlad 1 Omar
 Sana 2 Gabriel Lucas
 Kevin 2 Jad Cassie

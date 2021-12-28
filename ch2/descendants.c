@@ -8,6 +8,7 @@ typedef struct node {
   char *name;
   struct node **children;
   int num_children;
+  int score;
 } node;
 
 
@@ -54,6 +55,7 @@ int read_tree(node *nodes[], int num_lines){
       parent_node = new_node(parent_name);
       nodes[num_nodes] = parent_node;
       num_nodes++;
+      //printf("p %s %d\n", parent_name, num_nodes);
     }
     else
       free(parent_name);
@@ -69,6 +71,7 @@ int read_tree(node *nodes[], int num_lines){
         child_node = new_node(child_name);
         nodes[num_nodes] = child_node;
         num_nodes++;
+        //printf("c %s %d\n", child_name, num_nodes);
       }
       else
         free (child_name);
@@ -82,18 +85,70 @@ int read_tree(node *nodes[], int num_lines){
   return num_nodes;
 }
 
+int score_one(node *n, int d){
+  int i, total;
+
+  if (d==1){
+    return n->num_children;
+  }
+
+  total = 0;
+  for (i = 0; i < n->num_children; i++){
+    total = total + score_one(n->children[i], d - 1);
+  }
+
+  return total;
+}
+
+void score_all(node **nodes, int num_nodes, int d){
+  int j;
+
+  for (j = 0; j < num_nodes; j++){
+    nodes[j]->score = score_one(nodes[j], d);
+    //printf("[%1d] %s s:%2d\n", j, nodes[j]->name ,nodes[j]->score);
+  }
+
+}
+
+int compare(const void *v1, const void *v2){
+  const node *n1 = *(const node **) v1;
+  const node *n2 = *(const node **) v2;
+  
+  if (n1->score > n2->score){
+    return -1;
+  }
+
+  if (n1->score < n2->score){
+    return 1;
+  }
+
+  return strcmp(n1->name, n2->name); 
+}
+
+void output_info (node *nodes[], int num_nodes){
+  int i;
+  i = 0; 
+  while (i<3 && i < num_nodes && nodes[i]->score > 0){
+    printf("[%d] %s %d\n", i, nodes[i]->name, nodes[i]->score);
+    i++;
+  }
+  while (i< num_nodes && nodes[i]->score == nodes[i - 1]->score){
+    printf("[%d] %s %d\n", i, nodes[i]->name, nodes[i]->score);
+    i++;
+  }
+}
+
 
 int main (void) {
   int n, d, num_nodes;
-  int i, k;
+  int i,  k;
   node *nodes[255];
   scanf("%d %d", &n, &d);
   num_nodes = read_tree(nodes, n);
 
-  for (k=0; k < num_nodes; k++){
-      printf("%d %s\n", k,  nodes[k]->name);
-  }
+  score_all(nodes, num_nodes, d);
+  qsort(nodes, num_nodes, sizeof(node*), compare);
+  output_info(nodes, num_nodes);
 
-  printf("%d\n", num_nodes);
   return 0;
 }
